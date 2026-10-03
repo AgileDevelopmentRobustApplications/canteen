@@ -2,9 +2,9 @@
   "name": "canteen-prisma-framework",
   "version": "1.0.0",
   "description": "Prisma framework for canteen system connecting to existing DB (similar to Burger King DB)",
-  "main": "src/index.js",
+  "main": "server.js",
   "scripts": {
-    "start": "node src/index.js",
+    "start": "node server.js",
     "prisma:generate": "prisma generate",
     "prisma:deploy": "prisma db push && prisma db execute --file prisma/enable-rls.sql",
     "dev": "prisma dev"

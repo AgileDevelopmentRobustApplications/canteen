@@ -1,18 +1,15 @@
-import './theme.css';
-
-import UiDemo from './components/UiDemo.js';
+import { UiDemo } from './components/UiDemo.js';
 import OrderHistory from './components/OrderHistory.js';
 
-// Append UI components to the document body
-const container = document.createElement('div');
-container.id = 'app-root';
-document.body.appendChild(container);
+const container = document.getElementById('app-root');
 
-// Place UI components
-container.appendChild(UiDemo());
-
-// Add a heading and the order history component
-const heading = document.createElement('h2');
-heading.textContent = 'Order History';
-container.appendChild(heading);
-container.appendChild(OrderHistory());
+try {
+ container.replaceChildren(UiDemo(), OrderHistory());
+} catch (error) {
+ console.error('Failed to render the canteen UI.', error);
+ const message = document.createElement('p');
+ message.className = 'app-error';
+ message.setAttribute('role', 'alert');
+ message.textContent = 'The canteen page could not be loaded. Please refresh and try again.';
+ container.replaceChildren(message);
+}
