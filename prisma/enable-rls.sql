@@ -1,0 +1,1 @@
+ALTER TABLE "public"."OrderHistory" ENABLE ROW LEVEL SECURITY;

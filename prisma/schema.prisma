@@ -1,0 +1,59 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../node_modules/.prisma/client"
+}
+
+model User {
+  id        Int            @id @default(autoincrement())
+  email     String         @unique
+  password  String
+  createdAt DateTime       @default(now())
+  orders    Order[]
+  histories OrderHistory[] @relation("UserHistories")
+}
+
+model CanteenItem {
+  id            Int         @id @default(autoincrement())
+  name          String
+  description   String
+  priceCents    Int
+  category      String
+  itemsInOrders OrderItem[]
+}
+
+model Order {
+  id              Int         @id @default(autoincrement())
+  user            User        @relation(fields: [userId], references: [id])
+  userId          Int
+  createdAt       DateTime    @default(now())
+  status          String
+  totalPriceCents Int
+  items           OrderItem[]
+}
+
+model OrderItem {
+  id          Int         @id @default(autoincrement())
+  order       Order       @relation(fields: [orderId], references: [id])
+  orderId     Int
+  canteenItem CanteenItem @relation(fields: [itemId], references: [id])
+  itemId      Int
+  quantity    Int         @default(1)
+  priceCents  Int
+}
+
+model OrderHistory {
+  id            String   @id @default(cuid())
+  user          User     @relation("UserHistories", fields: [userId], references: [id])
+  userId        Int
+  status        String
+  totalCents    Int
+  createdAt     DateTime @default(now())
+  itemsSnapshot Json
+
+  @@index([userId])
+}
